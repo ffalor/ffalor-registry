@@ -7,14 +7,7 @@
   "source": "https://github.com/ffalor/ffalor-registry",
   "project_page": "https://github.com/ffalor/ffalor-registry",
   "issues_url": "https://github.com/ffalor/ffalor-registry/issues",
-  "tags": [
-    "windows",
-    "registry",
-    "keys",
-    "values",
-    "registry_key",
-    "registry_value"
-  ],
+  "tags": ["registry", "keys", "values", "registry_key", "registry_value"],
   "dependencies": [],
   "operatingsystem_support": [
     {
