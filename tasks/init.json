@@ -1,0 +1,42 @@
+{
+  "puppet_task_version": 1,
+  "supports_noop": false,
+  "input_method": "powershell",
+  "description": "Task allows you to add and remove registry keys.",
+  "implementations": [
+    {
+      "name": "windows.ps1",
+      "requirements": ["powershell"]
+    }
+  ],
+  "parameters": {
+    "action": {
+      "description": "The operation (get, set, delete) to perform on the setting.",
+      "type": "Enum[get, set, delete]"
+    },
+    "key": {
+      "description": "The registry key to perform the operation on (get, set, delete).",
+      "type": "String[1]"
+    },
+    "property": {
+      "description": "The optional registry property to perform the operation on (get, set, delete).",
+      "type": "Optional[String[1]]"
+    },
+    "type": {
+      "description": "The property type.",
+      "type": "Enum[string, expandstring, binary, dword, multistring, qword]"
+    },
+    "value": {
+      "description": "The value of the property.",
+      "type": "Optional[String[1]]"
+    },
+    "force": {
+      "description": "Indicates to overwrite the current value of the key if it already exists. Defaults to False.",
+      "type": "Optional[Boolean]"
+    },
+    "recurse": {
+      "description": "Indicates to delete the items in the specified locations and in all child items of the locations. Defaults to False.",
+      "type": "Optional[Boolean]"
+    }
+  }
+}
