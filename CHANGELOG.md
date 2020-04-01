@@ -6,6 +6,4 @@ All notable changes to this project will be documented in this file.
 
 **Features**
 
-**Bugfixes**
-
-**Known Issues**
+-   Added the ability to remove, set, and get registry keys and values.

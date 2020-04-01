@@ -1,87 +1,80 @@
 # registry
 
-Welcome to your new module. A short overview of the generated parts can be found in the PDK documentation at https://puppet.com/pdk/latest/pdk_generating_modules.html .
+![Puppet Forge downloads](https://img.shields.io/puppetforge/dt/ffalor/registry.svg)
+![GitHub issues](https://img.shields.io/github/issues/ffalor/ffalor-registry.svg)
+![Puppet Forge version](https://img.shields.io/puppetforge/v/ffalor/registry.svg)
+![Puppet Forge – PDK version](https://img.shields.io/puppetforge/pdk-version/ffalor/registry.svg)
 
-The README template below provides a starting point with details about what information to include in your README.
+## Table of Contents
 
-#### Table of Contents
-
-1. [Description](#description)
-2. [Setup - The basics of getting started with registry](#setup)
-    * [What registry affects](#what-registry-affects)
-    * [Setup requirements](#setup-requirements)
-    * [Beginning with registry](#beginning-with-registry)
-3. [Usage - Configuration options and additional functionality](#usage)
-4. [Limitations - OS compatibility, etc.](#limitations)
-5. [Development - Guide for contributing to the module](#development)
+1.  [Description](#description)
+2.  [Requirements](#Requirements)
+3.  [Usage - Configuration options and additional functionality](#usage)
+    -   [Puppet Tasks and Bolt](#Puppet-Task-and-Bolt)
+    -   [Puppet Task API](#Puppet-Task-Api)
+4.  [Development - Guide for contributing to the module](#development)
 
 ## Description
 
-Briefly tell users why they might want to use your module. Explain what your module does and what kind of problems users can solve with it.
+This module includes a puppet task to help manage registry keys.
 
-This should be a fairly short description helps the user decide if your module is what they want.
+This task can be used to:
 
-## Setup
+-   Get current registry keys/values (get)
+-   Create new or overwrite registry keys/values (set)
+-   Delete registry keys/values (delete)
 
-### What registry affects **OPTIONAL**
+## Requirements
 
-If it's obvious what your module touches, you can skip this section. For example, folks can probably figure out that your mysql_instance module affects their MySQL instances.
-
-If there's more that they should know about, though, this is the place to mention:
-
-* Files, packages, services, or operations that the module will alter, impact, or execute.
-* Dependencies that your module automatically installs.
-* Warnings or other important notices.
-
-### Setup Requirements **OPTIONAL**
-
-If your module requires anything extra before setting up (pluginsync enabled, another module, etc.), mention it here.
-
-If your most recent release breaks compatibility or requires particular steps for upgrading, you might want to include an additional "Upgrading" section here.
-
-### Beginning with registry
-
-The very basic steps needed for a user to get the module up and running. This can include setup steps, if necessary, or it can be an example of the most basic use of the module.
+Any Powershell Version
 
 ## Usage
 
-Include usage examples for common use cases in the **Usage** section. Show your users how to use your module to solve problems, and be sure to include code examples. Include three to five examples of the most important or common tasks a user can accomplish with your module. Show users how to accomplish more complex tasks that involve different types, classes, and functions working in tandem.
+### Puppet Task and Bolt
 
-## Reference
+To run an registry task, use the task command, specifying the command to be executed.
 
-This section is deprecated. Instead, add reference information to your code as Puppet Strings comments, and then use Strings to generate a REFERENCE.md in your module. For details on how to add code comments and generate documentation with Strings, see the Puppet Strings [documentation](https://puppet.com/docs/puppet/latest/puppet_strings.html) and [style guide](https://puppet.com/docs/puppet/latest/puppet_strings_style.html)
+-   With PE on the command line, run `puppet task run registry action=<set|delete|get> key=<key_path>`.
+-   With Bolt on the command line, run `bolt task run registry action=<set|delete|get> key=<key_path>`.
 
-If you aren't ready to use Strings yet, manually create a REFERENCE.md in the root of your module directory and list out each of your module's classes, defined types, facts, functions, Puppet tasks, task plans, and resource types and providers, along with the parameters for each.
+For example, to add to create a key `HKLM:\SOFTWARE\Example` with a property `example_property` with a value of `example_value` of type `string` while overwriting current values, run:
 
-For each element (class, defined type, function, and so on), list:
+-   With PE, run `puppet task run registry action=set key="HKLM:\SOFTWARE\Example" property="example_property" value="example_value" type=string force=true --nodes saturn`.
+-   With Bolt, run `bolt task run registry action=set key="HKLM:\SOFTWARE\Example" property="example_property" value="example_value" type=string force=true --nodes saturn`.
 
-  * The data type, if applicable.
-  * A description of what the element does.
-  * Valid values, if the data type doesn't make it obvious.
-  * Default value, if any.
+### Puppet Task API
 
-For example:
+endpoint: `https://<puppet>:8143/orchestrator/v1/command/task`
 
+method: `post`
+
+body:
+
+```json
+{
+  "environment": "production",
+  "task": "registry",
+  "params": {
+    "action": "present",
+    "key": "HKLM:\\SOFTWARE\\Example",
+    "property": "example_property",
+    "value": "example_value",
+    "type": "string",
+    "force": true
+  },
+  "description": "Description for task",
+  "scope": {
+    "nodes": ["saturn.example.com"]
+  }
+}
 ```
-### `pet::cat`
 
-#### Parameters
-
-##### `meow`
-
-Enables vocalization in your cat. Valid options: 'string'.
-
-Default: 'medium-loud'.
-```
+You can also run tasks in the PE console. See PE task documentation for complete information.
 
 ## Limitations
 
-In the Limitations section, list any incompatibilities, known issues, or other warnings.
+None
 
 ## Development
 
-In the Development section, tell other users the ground rules for contributing to your project and how they should submit their work.
-
-## Release Notes/Contributors/Etc. **Optional**
-
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You can also add any additional sections you feel are necessary or important to include here. Please use the `## ` header.
+Feel free to open issues or create pull requests on Github.
