@@ -76,11 +76,12 @@ Param(
 
 function WriteFailure($message) {
 
+    $msg = ConvertTo-Json -InputObject $message
 
     $error_payload = @"
 {
     "_error": {
-        "msg": $message,
+        "msg": $msg,
         "kind": "puppetlabs.tasks/task-error",
         "details": {
             "action": "${action}",
@@ -96,6 +97,7 @@ function WriteFailure($message) {
 "@
 
     Write-Output $error_payload
+    exit 1
 }
 
 function WriteSuccess($message) {
@@ -108,7 +110,7 @@ function WriteSuccess($message) {
 }
 "@
     Write-Output $success_payload
-
+    exit 0
 }
 
 function ValidateParams {
